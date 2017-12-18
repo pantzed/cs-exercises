@@ -1,22 +1,27 @@
 class Stack {
+  //this is where you create your stack
   constructor() {
-    this._arr = [];
+
   }
 
+  //this should add an element to the stack
   push(item) {
-    this._arr.push(item);
+
   }
 
+  //this should return the topmost stack element
   peek() {
-    return this._arr[this._arr.length - 1];
+
   }
 
+  //this should remove the topmost stack element
   pop() {
-    return this._arr.pop();
+
   }
 
+  //this should return the stack's total length
   length() {
-    return this._arr.length;
+
   }
 }
 
