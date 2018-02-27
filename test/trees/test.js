@@ -388,4 +388,121 @@ describe('Trees', () => {
       });
     });
   });
+
+  describe('Level Three', () => {
+    describe('#isBST', () => {
+      it('Confirms that NULL is, in fact, a BST', () => {
+        expect(level3.isBST(null)).to.be.eql(true);
+      });
+      it('Returns true if a Binary Tree is, in fact, a BST', () => {
+        expect(level3.isBST({
+          value: 6,
+          left: {
+            value: 2,
+            left: null,
+            right: {
+              value: 4,
+              left: null,
+              right: null
+            }
+          },
+          right: {
+            value: 12,
+            right: null,
+            left: {
+              value: 10,
+              left: null,
+              right: null
+            }
+          },
+        })).to.be.eql(true);
+      });
+      it('Returns false if a Binary Tree is not a BST.', () => {
+        expect(level3.isBST({
+          value: 6,
+          left: {
+            value: 2,
+            left: null,
+            right: {
+              value: 4,
+              left: null,
+              right: null
+            }
+          },
+          right: {
+            value: 12,
+            right: null,
+            left: {
+              value: 10,
+              left: {
+                value: 4,
+                left: null,
+                right: null
+              },
+              right: null
+            }
+          },
+        })).to.be.eql(false);
+      });
+    });
+    describe('#isBalanced', () => {
+      it('Confirms that NULL is a beautiful balanced BST', () => {
+        expect(level3.isBalanced(null)).to.be.eql(true);
+      });
+      it('Returns true if a Binary Tree is, balanced', () => {
+        expect(level3.isBalanced({
+          value: 6,
+          left: {
+            value: 2,
+            left: null,
+            right: {
+              value: 4,
+              left: null,
+              right: null
+            }
+          },
+          right: {
+            value: 12,
+            right: null,
+            left: {
+              value: 10,
+              left: null,
+              right: null
+            }
+          },
+        })).to.be.eql(true);
+      });
+      it('Returns false if a Binary Tree is not balanced.', () => {
+        expect(level3.isBalanced({
+          value: 6,
+          left: {
+            value: 2,
+            left: null,
+            right: {
+              value: 4,
+              left: null,
+              right: null
+            }
+          },
+          right: {
+            value: 12,
+            right: null,
+            left: {
+              value: 10,
+              left: {
+                value: 9,
+                left: {
+                  value: 8,
+                  left: null,
+                  right: null
+                },
+                right: null
+              },
+              right: null
+            }
+          },
+        })).to.be.eql(false);
+      });
+    });
+  });
 });
