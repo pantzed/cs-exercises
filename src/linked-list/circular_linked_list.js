@@ -7,7 +7,7 @@
 */
 
 function Node(val, next, prev) {
-
+  
 }
 
 function CircularLinkedList() {
