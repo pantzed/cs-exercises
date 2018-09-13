@@ -145,17 +145,30 @@ BinTree.prototype.containsRecursively = function(value) {
 };
 
 BinTree.prototype.breadthFirstSearch = function() {
-  function recurse(node) {
-    if (node.right === null && node.left === null) {
-      return [];
-    }
-    else {
-      return recurse()
-    }
+  if (!this.root) {
+    return [];
   }
-  let node = this.root;
-  let arr = new Array;
-  return recurse(node, arr);
+  else {
+    let currentNode = this.root;
+    let queue = [];
+    let values = [];
+    
+    if (currentNode) {
+      queue.push(currentNode);
+    }
+
+    while (queue.length > 0){
+      let workingNode = queue.shift()
+        if (workingNode.left){
+          queue.push(workingNode.left);
+        }
+        if (workingNode.right){
+          queue.push(workingNode.right);
+        }
+      values.push(workingNode.value);
+    }
+  return values;
+  }
 };
 
 // DEPTH FIRST SEARCH (Pre / In / Post Order)
@@ -176,53 +189,94 @@ BinTree.prototype.breadthFirstSearch = function() {
 // visualizing the call stack using the chrome dev tools or just drawing it will help a lot with this!
 
 BinTree.prototype.DFSPreOrder = function() {
+  if (!this.root) {
+    return [];
+  }
 
+  else {
+    let currentNode = this.root;
+    let stack = [currentNode];
+    let values = [];
+
+    while (stack.length > 0) {
+      let workingNode = stack.pop();
+      values.push(workingNode.value)
+      if (workingNode.right) {
+        stack.push(workingNode.right);
+      }
+      if (workingNode.left){
+        stack.push(workingNode.left);
+      }
+    }
+    return values;
+  }
 };
 
 BinTree.prototype.DFSInOrder = function() {
-  // function recurse(node, arr) {
-  //   if (node) {
-  //     arr.unshift(node.value);
-  //     if (node.left) {
-  //       return recurse(node.left, arr);
-  //     }
-  //     else if (node.right) {
-  //       return recurse(node.right, arr);
-  //     }
-  //     else {
-  //       return arr;
-  //     }
-  //   }
-  // }
-  // let node = this.root;
-  // let arr = new Array;
-  // return recurse(node, arr);
+  if (!this.root) {
+    return [];
+  }
+  else {
+    let currentNode = this.root;
+    let stack = [];
+    let values = [];
+    do {
+
+      // Traverse down the left-most branch
+      // add nodes to the stack until null becomes currentNode
+      // pop from the stack and add it's value to values
+      // add currentNode value to the stack when null is reached
+      // remove that node from the stack
+      // check if current node has a right branch
+      // if it does, right branch becomes current branch
+      // else the last node in the stack becomes current branch
+      /*
+
+      console.log('**** STACK: ' + currentNode);
+      console.log('**** NODE: ' + currentNode.value);
+
+      */
+
+      while (currentNode){
+        stack.push(currentNode);
+        currentNode = currentNode.left;
+      }
+
+      currentNode = stack.pop();
+      values.push(currentNode.value);
+      currentNode = currentNode.right;
+      
+
+    } while (stack.length > 0);
+
+    return values;
+  }
 };
 
 BinTree.prototype.DFSPostOrder = function() {
 
 };
 
-BinTree.prototype.size = function() {
+// BinTree.prototype.size = function() {
 
-};
+// };
 
-BinTree.prototype.findLowest = function() {
+// BinTree.prototype.findLowest = function() {
 
-};
+// };
 
-BinTree.prototype.findHighest = function() {
+// BinTree.prototype.findHighest = function() {
 
-};
+// };
 
-// private helper method for remove
-BinTree.prototype._countChildren = function(node) {
+// // private helper method for remove
+// BinTree.prototype._countChildren = function(node) {
 
-};
+// };
 
-BinTree.prototype.remove = function(value) {
+// BinTree.prototype.remove = function(value) {
 
-};
+// };
 
 module.exports = {
   BinTree: BinTree,
