@@ -222,22 +222,7 @@ BinTree.prototype.DFSInOrder = function() {
     let values = [];
     do {
 
-      // Traverse down the left-most branch
-      // add nodes to the stack until null becomes currentNode
-      // pop from the stack and add it's value to values
-      // add currentNode value to the stack when null is reached
-      // remove that node from the stack
-      // check if current node has a right branch
-      // if it does, right branch becomes current branch
-      // else the last node in the stack becomes current branch
-      /*
-
-      console.log('**** STACK: ' + currentNode);
-      console.log('**** NODE: ' + currentNode.value);
-
-      */
-
-      while (currentNode){
+      while (currentNode) {
         stack.push(currentNode);
         currentNode = currentNode.left;
       }
@@ -245,9 +230,8 @@ BinTree.prototype.DFSInOrder = function() {
       currentNode = stack.pop();
       values.push(currentNode.value);
       currentNode = currentNode.right;
-      
 
-    } while (stack.length > 0);
+    } while (stack.length > 0 || currentNode !== null);
 
     return values;
   }
@@ -257,26 +241,26 @@ BinTree.prototype.DFSPostOrder = function() {
 
 };
 
-// BinTree.prototype.size = function() {
+BinTree.prototype.size = function() {
 
-// };
+};
 
-// BinTree.prototype.findLowest = function() {
+BinTree.prototype.findLowest = function() {
 
-// };
+};
 
-// BinTree.prototype.findHighest = function() {
+BinTree.prototype.findHighest = function() {
 
-// };
+};
 
-// // private helper method for remove
-// BinTree.prototype._countChildren = function(node) {
+// private helper method for remove
+BinTree.prototype._countChildren = function(node) {
 
-// };
+};
 
-// BinTree.prototype.remove = function(value) {
+BinTree.prototype.remove = function(value) {
 
-// };
+};
 
 module.exports = {
   BinTree: BinTree,
