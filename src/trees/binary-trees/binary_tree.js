@@ -285,20 +285,109 @@ BinTree.prototype.DFSPostOrder = function() {
 };
 
 BinTree.prototype.size = function() {
+  if (!this.root) {
+    return [];
+  }
 
+  else {
+    let currentNode = this.root;
+    let stack = [currentNode];
+    let values = [];
+
+    while (stack.length > 0) {
+      let workingNode = stack.pop();
+      values.push(workingNode.value)
+      if (workingNode.right) {
+        stack.push(workingNode.right);
+      }
+      if (workingNode.left){
+        stack.push(workingNode.left);
+      }
+    }
+    return values.length;
+  }
 };
 
 BinTree.prototype.findLowest = function() {
+  if (!this.root) {
+    return [];
+  }
+  else {
+    let currentNode = this.root;
+    let stack = [];
+    let values = [];
+    do {
+      while (currentNode) {
+        stack.push(currentNode);
+        currentNode = currentNode.left || currentNode.right;
+      }
 
+      currentNode = stack.pop();
+      values.push(currentNode.value);
+      currentNode = stack[stack.length - 1].right;
+
+    } while (currentNode !== null);
+
+    while (stack.length > 0){
+      values.push(stack.pop().value);
+    }
+
+    return Math.min(...values)
+  }
 };
 
 BinTree.prototype.findHighest = function() {
+  if (!this.root) {
+    return [];
+  }
+  else {
+    let currentNode = this.root;
+    let stack = [];
+    let values = [];
 
+    do {
+      while (currentNode) {
+        stack.push(currentNode);
+        currentNode = currentNode.right || currentNode.left;
+      }
+
+      currentNode = stack.pop();
+      values.push(currentNode.value);
+      currentNode = stack[stack.length - 1].left;
+
+    } while (currentNode !== null);
+
+    while (stack.length > 0){
+      values.push(stack.pop().value);
+    }
+
+    return Math.max(...values);
+  }
 };
 
 // private helper method for remove
 BinTree.prototype._countChildren = function(node) {
+  if (!node) {
+    return [];
+  }
 
+  else {
+    let currentNode = node;
+    let stack = [node];
+    let values = [];
+
+    while (stack.length > 0) {
+      let currentNode = stack.pop();
+      values.push(currentNode.value)
+      if (currentNode.right) {
+        stack.push(currentNode.right);
+      }
+      if (currentNode.left){
+        stack.push(currentNode.left);
+      }
+    }
+    return values.length;
+  }
 };
 
 BinTree.prototype.remove = function(value) {
