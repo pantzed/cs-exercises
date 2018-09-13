@@ -238,7 +238,50 @@ BinTree.prototype.DFSInOrder = function() {
 };
 
 BinTree.prototype.DFSPostOrder = function() {
+  if (!this.root) {
+    return [];
+  }
+  else {
+    let currentNode = this.root;
+    let stack = [];
+    let values = [];
+    do {
+      while (currentNode) {
+        stack.push(currentNode);
+        currentNode = currentNode.left || currentNode.right;
+      }
 
+      currentNode = stack.pop();
+      values.push(currentNode.value);
+      currentNode = stack[stack.length - 1].right;
+
+    } while (currentNode !== null);
+
+    while (stack.length > 1){
+      values.push(stack.pop().value);
+    }
+
+    stack = [];
+    currentNode = this.root;
+
+    do {
+      while (currentNode) {
+        stack.push(currentNode);
+        currentNode = currentNode.right || currentNode.left;
+      }
+
+      currentNode = stack.pop();
+      values.push(currentNode.value);
+      currentNode = stack[stack.length - 1].left;
+
+    } while (currentNode !== null);
+
+    while (stack.length > 0){
+      values.push(stack.pop().value);
+    }
+
+    return values;
+  }
 };
 
 BinTree.prototype.size = function() {
