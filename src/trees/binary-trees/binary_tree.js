@@ -54,44 +54,46 @@ BinTree.prototype.insertIteratively = function(value) {
   }
 };
 
-BinTree.prototype.insertRecursively = function(value) {
-
-  let newNode = new Node(value);
-
-  function recursively(node) {
-    if (value === node.value) {
-      return 'duplicate!';
-    }
-    else {
-      if (value < node.value && node.left === null) {
-        node.left = newNode;
-        return;
-      }
-      if (value < node.value) {
-        return recursively(node.left);
-      }
-      if (value > node.value && node.right === null) {
-        node.right = newNode;
-        return;
-      }
-      if (value > node.value) {
-        return recursively(node.right);
-      }
-    }
-  }
+BinTree.prototype.insertRecursively = function(value, current) {
 
   if (typeof(value) !== "number" || isNaN(value)){
     return 'Please insert a number';
   }
 
-  else if (!this.root) {
-    this.root = new Node(value);
-    return;
+  else {
+    let newNode = new Node(value);
+
+    if (!this.root) {
+      this.root = new Node(value);
+      return;
+    }
+
+    if (!current) {
+      current = this.root;
+    }
+
+    if (newNode.value === current.value) {
+      return 'duplicate!';
+    }
+
+    if (newNode.value < current.value) {
+      if (!current.left) {
+        current.left = newNode;
+      }
+      else {
+        return this.insertRecursively(value, current.left);
+      }
+    }
+    else if (newNode.value > current.value) {
+      if (!current.right) {
+        current.right = newNode;
+      }
+      else {
+        return this.insertRecursively(value, current.right);
+      }
+    }
   } 
 
-  else {
-    return recursively(this.root);
-  }
 };
 
 BinTree.prototype.containsIteratively = function(value) {
@@ -117,31 +119,37 @@ BinTree.prototype.containsIteratively = function(value) {
   }
 };
 
-BinTree.prototype.containsRecursively = function(value) {
+BinTree.prototype.containsRecursively = function(value, current) {
 
-  function recurse(node) {
-    if (!node) {
+    if (!this.root) {
       return false;
     }
-    else if (value === node.value) {
+
+    if (!current) {
+      current = this.root;
+    }
+
+    if (value === current.value) {
       return true;
     }
-    else if (value > node.value) {
-      return recurse(node.right);
+    else {
+      if (value < current.value) {
+        if (!current.left){
+          return false;
+        }
+        else {
+          return this.containsRecursively(value, current.left);
+        }
+      }
+      if (value > current.value) {
+        if (!current.right) {
+          return false;
+        }
+        else {
+          return this.containsRecursively(value, current.right);
+        }
+      }
     }
-    else if (value < node.value) {
-      return recurse(node.left);
-    }
-  }
-
-  if (typeof(value) !== "number" || isNaN(value)){
-    return 'Please insert a number';
-  }
-
-  else {
-    return recurse(this.root);
-  }
-
 };
 
 BinTree.prototype.breadthFirstSearch = function() {
@@ -158,14 +166,14 @@ BinTree.prototype.breadthFirstSearch = function() {
     }
 
     while (queue.length > 0){
-      let workingNode = queue.shift()
-        if (workingNode.left){
-          queue.push(workingNode.left);
+      currentNode = queue.shift()
+        if (currentNode.left){
+          queue.push(currentNode.left);
         }
-        if (workingNode.right){
-          queue.push(workingNode.right);
+        if (currentNode.right){
+          queue.push(currentNode.right);
         }
-      values.push(workingNode.value);
+      values.push(currentNode.value);
     }
   return values;
   }
@@ -199,13 +207,13 @@ BinTree.prototype.DFSPreOrder = function() {
     let values = [];
 
     while (stack.length > 0) {
-      let workingNode = stack.pop();
-      values.push(workingNode.value)
-      if (workingNode.right) {
-        stack.push(workingNode.right);
+      let currentNode = stack.pop();
+      values.push(currentNode.value)
+      if (currentNode.right) {
+        stack.push(currentNode.right);
       }
-      if (workingNode.left){
-        stack.push(workingNode.left);
+      if (currentNode.left){
+        stack.push(currentNode.left);
       }
     }
     return values;
@@ -368,25 +376,33 @@ BinTree.prototype.findHighest = function() {
 // private helper method for remove
 BinTree.prototype._countChildren = function(node) {
   if (!node) {
-    return [];
+    return 0;
   }
 
   else {
     let currentNode = node;
-    let stack = [node];
-    let values = [];
-
-    while (stack.length > 0) {
-      let currentNode = stack.pop();
-      values.push(currentNode.value)
-      if (currentNode.right) {
-        stack.push(currentNode.right);
-      }
-      if (currentNode.left){
-        stack.push(currentNode.left);
-      }
+    let queue = [];
+    let count = [];
+    
+    if (!currentNode.right && !currentNode.left) {
+      return 0;
     }
-    return values.length;
+    else {
+      currentNode = (currentNode.right ? currentNode.right : currentNode.left);
+      queue.push(currentNode);
+    }
+
+    while (queue.length > 0){
+      currentNode = queue.shift()
+        if (currentNode.left){
+          queue.push(currentNode.left);
+        }
+        if (currentNode.right){
+          queue.push(currentNode.right);
+        }
+      count.push(currentNode.value);
+    }
+  return count.length;
   }
 };
 
