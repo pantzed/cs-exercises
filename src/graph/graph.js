@@ -39,19 +39,29 @@ function Graph() {
 
   // Get the size of the graph by returning how many nodes are in the graph
   this.size = function() {
-    // TODO
+    if (this.nodes) {
+      return this.nodes.length;
+    }
     return -1;
   };
 
   // Find the total number of edges in the graph
   this.numEdges = function() {
-    // TODO
+    if (this.edges) {
+      return this.edges.length;
+    }
     return -1;
   };
 
   // Find the total weight of the graph by adding up the weights of each edge
   this.weight = function() {
-    // TODO
+    let totalWeight = 0;
+    if (this.edges) {
+      this.edges.forEach((edge) => {
+        totalWeight += edge.weight;
+      });
+      return totalWeight;
+    }
     return -1;
   };
 
@@ -59,8 +69,16 @@ function Graph() {
   // Return all node values at the other side of an edge of the target node
   // Remember that edges are not directional: A -> B also implies B -> A
   this.findNeighbors = function(value) {
-    // TODO
-    return [];
+    let neighbors = [];
+    this.edges.forEach((edge) => {
+      if (edge.first.value === value && edge.second.value) {
+        neighbors.push(edge.second.value);
+      }
+      else if (edge.second.value === value && edge.first.value) {
+        neighbors.push(edge.first.value);
+      }
+    });
+    return neighbors;
   };
 
   // Stretch!
@@ -68,15 +86,46 @@ function Graph() {
   // Return each edge required to traverse the route
   // Remember that edges are not directional: A -> B also implies B -> A
   this.findPath = function(start, finish) {
-    // TODO
+    let neighborPaths = [];
+
+    this.edges.forEach((edge) => {
+      if (edge.first.value === start && edge.second.value === finish) {
+        return edge;
+      }
+      else if (edge.first.value === finish && edge.second.value === start) {
+        return edge;
+      }
+      else if (edge.first.value === start || edge.second.value === start) {
+        neighborPaths.push(edge);
+      }
+      else {
+        return null;
+      }
+    });
+
     return [];
   };
 
   // Return a list of any nodes that are orphans.
   // An orphan is any node with no edges.
   this.findOrphans = function() {
-    // TODO
-    return [];
+
+    let orphans = this.nodes.map((node) => {
+      return node.value;
+    });
+
+    for (let i=0; i<this.nodes.length; i++) {
+      let current = this.nodes[i].value;
+      for (let j=0; j<this.edges.length; j++) {
+        if (current === this.edges[j].first.value || current === this.edges[j].second.value) {
+          let index = orphans.indexOf(current);
+          orphans.splice(index, 1);
+        }
+      }
+    }
+
+    return orphans;
+
   };
 
   this.print = function() {

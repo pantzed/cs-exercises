@@ -58,7 +58,7 @@ describe('Graph', function() {
     expect(neighbors).to.contain('Nashville');
   });
 
-  xit('should find the shortest path', function () {
+  it('should find the shortest path', function () {
     let path = cityGraph.findPath('Seattle', 'Nashville');
     expect(path.length).to.equal(2);
     // Seattle -> Denver -> Nashville
