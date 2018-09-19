@@ -86,24 +86,53 @@ function Graph() {
   // Return each edge required to traverse the route
   // Remember that edges are not directional: A -> B also implies B -> A
   this.findPath = function(start, finish) {
-    let neighborPaths = [];
+    const visited = [];
+    const queue = [[[start], 0]];
+    let found = false;
 
-    this.edges.forEach((edge) => {
-      if (edge.first.value === start && edge.second.value === finish) {
-        return edge;
-      }
-      else if (edge.first.value === finish && edge.second.value === start) {
-        return edge;
-      }
-      else if (edge.first.value === start || edge.second.value === start) {
-        neighborPaths.push(edge);
-      }
-      else {
-        return null;
-      }
-    });
+    while (queue.length > 0) {
 
-    return [];
+      let path = queue.shift();
+      let index = path[0].length - 1;
+      let current = path[0][index];
+
+      visited.push(current);
+
+      for (let i=0; i<this.edges.length; i++) {
+
+        let first = this.edges[i].first;
+        let second = this.edges[i].second;
+
+        if (first.value === current && second.value === finish) {
+          let newPath = path[0].concat([second.value]);
+          let newWeight = path[1] + this.edges[i].weight;
+          let next = [newPath, newWeight];
+          console.log(next);
+          return true;
+        }
+        if (second.value === current && first.value === finish) {
+          let newPath = path[0].concat([first.value]);
+          let newWeight = path[1] + this.edges[i].weight;
+          let next = [newPath, newWeight];
+          console.log(next);
+          return true;
+        }
+        else {
+          if (first.value === current) {
+            let newPath = path[0].concat([second.value]);
+            let newWeight = path[1] + this.edges[i].weight;
+            let next = [newPath, newWeight];
+            queue.push(next);
+          }
+          else if (second.value === current) {
+            let newPath = path[0].concat([first.value]);
+            let newWeight = path[1] + this.edges[i].weight;
+            let next = [newPath, newWeight];
+            queue.push(next);
+          }
+        } 
+      }
+    }
   };
 
   // Return a list of any nodes that are orphans.
@@ -143,5 +172,46 @@ function Graph() {
     return sum;
   };
 }
+
+
+/* BFS for Graph that returns a list of node values of a shortest path */
+this.bfsFindPath = function(start, finish) {
+  const visited = [];
+  const queue = [[start]];
+  let found = false;
+
+  while (queue.length > 0 && found === false) {
+
+    let path = queue.shift();
+    visited.push(path);
+
+    this.edges.forEach((edge) => {
+      if (found === false) {
+        if (edge.first.value === finish || edge.second.value === finish) {
+          path.push(finish);
+          found = true;
+          return;
+        }
+        else {
+          if (edge.first.value === path[path.length-1]) {
+            if (!visited.includes(path) || !queue.includes(path)) {
+              path.push(edge.second.value)
+              queue.push(path);
+            }
+          }
+          else if (edge.second.value === path[path.length-1]) {
+            if (!visited.includes(path) || !queue.includes(path)) {
+              path.push(edge.first.value)
+              queue.push(path);
+            }
+          }
+        }
+      }
+    });
+    if (found === true) {
+      return path; 
+    }
+  }
+};
 
 module.exports = Graph;
