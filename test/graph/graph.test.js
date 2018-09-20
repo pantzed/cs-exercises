@@ -66,7 +66,7 @@ describe('Graph', function() {
     expect(path[0].second.value).to.equal('Seattle');
     expect(path[1].first.value).to.equal('Nashville');
     expect(path[1].second.value).to.equal('Denver');
-    expect(Graph.pathWeight(path)).to.equal(2474);
+    expect(cityGraph.pathWeight(path)).to.equal(2474);
   });
 
   it('should find orphans', function () {

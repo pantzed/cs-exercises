@@ -107,15 +107,17 @@ function Graph() {
           let newPath = path[0].concat([second.value]);
           let newWeight = path[1] + this.edges[i].weight;
           let next = [newPath, newWeight];
-          console.log(next);
-          return true;
+          path = [{first: {value: next[0][1]}, second: {value: next[0][0]}, weight: 0}, {first: {value: finish}, second: {value: next[0][1]}, weight: next[1]}];
+          this.nodes = path;
+          return this.nodes;
         }
         if (second.value === current && first.value === finish) {
           let newPath = path[0].concat([first.value]);
           let newWeight = path[1] + this.edges[i].weight;
           let next = [newPath, newWeight];
-          console.log(next);
-          return true;
+          path = [{first: {value: next[0][1]}, second: {value: next[0][0]}, weight: 0}, {first: {value: finish}, second: {value: next[0][1]}, weight: next[1]}];
+          this.nodes = path;
+          return this.nodes;
         }
         else {
           if (first.value === current) {
@@ -164,15 +166,15 @@ function Graph() {
     }
   };
 
-  this.pathWeight = function(path) {
-    let sum = 0;
-    for (let i = 0; i < path.length; i++) {
-      sum += path[i].weight;
-    }
-    return sum;
-  };
 }
 
+Graph.prototype.pathWeight = function(path) {
+  let sum = 0;
+  for (let i = 0; i < path.length; i++) {
+    sum += path[i].weight;
+  }
+  return sum;
+};
 
 /* BFS for Graph that returns a list of node values of a shortest path */
 this.bfsFindPath = function(start, finish) {
