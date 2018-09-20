@@ -44,7 +44,6 @@ describe('Graph', function() {
     describe('when adding a vertex with one edge', function() {
       it('adds a new vertex with the edge', function() {
         graph.addVertexWithEdges([1]);
-
         expect(graph.vertices[9].edges).to.deep.equal([1]);
       });
       it('adds the new vertex as an edge to existing vertices it may be connected to', function() {
